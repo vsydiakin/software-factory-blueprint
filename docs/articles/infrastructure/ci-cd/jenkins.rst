@@ -19,7 +19,7 @@ The Jenkins project offers preinstalled Docker images which can be used to vastl
    TimeoutStartSec=0
    Restart=always
    ExecStartPre=-/usr/bin/docker stop %n
-   ExecStartPre=-/usr/bin/docker rm %n
+#   ExecStartPre=-/usr/bin/docker rm %n
    ExecStartPre=/usr/bin/docker pull jenkinsci/jenkins:lts
    ExecStart=/usr/bin/docker run --rm --name %n -p 8080:8080 --env JENKINS_OPTS="--prefix=/jenkins" --env JENKINS_JAVA_OPTIONS="-Djava.io.tmpdir=$JENKINS_HOME/tmp" -v jenkins_home:/var/jenkins_home -v /var/www/:/var/www/ jenkinsci/jenkins:lts
    
@@ -27,6 +27,8 @@ The Jenkins project offers preinstalled Docker images which can be used to vastl
    WantedBy=multi-user.target
 
 This runs Jenkins and mounts ``/var/www`` into the Jenkins container at the same place which makes it possible for Jenkins to store some artifacts in a place where a HTTP server can reach them and serve them.
+
+note: this line "#   ExecStartPre=-/usr/bin/docker rm %n" disabled to prevent autoupdate during the OS updating.
 
 nginx configuration
 -------------------
